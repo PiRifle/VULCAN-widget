@@ -1,0 +1,28 @@
+{
+  "name": "vulcan-widget",
+  "version": "0.0.1",
+  "author": "your name",
+  "description": "My Electron app",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "electron-bottom-most": "^0.3.0",
+    "electron-css": "^1.0.2",
+    "jquery": "^3.5.1",
+    "jsdom": "^16.4.0",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6"
+    },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "keywords": [
+    "VULCAN"
+  ],
+  "license": "ISC"
+}

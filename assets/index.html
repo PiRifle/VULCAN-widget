@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Wybierz Plan</title>
+</head>
+<body>
+  <div class="backimg"></div>
+  <div class="background"></div>
+  <div class="BG">
+    <header>
+    <center>
+      <h1 style="font-family: 'Arial'">Wybierz Plan</h1>
+        <input type="input" class="form__field siteurl" />
+      <button class="set" type="button" name="zatwierdz" type="http://plan.elektryk.opole.pl/">Zatwierdź</button>
+      </center>
+    </header>
+      <div style="display:none" class="sitecontainer">
+      </div>
+  </div>
+
+</body>
+<script type="text/javascript">
+  const {remote, ipcRenderer} = require('electron')
+  var rp = require("request-promise")
+  var $ = require("jquery")
+  function selectPlan(link){
+    var okno = remote.getCurrentWindow();
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+      if (arg) {
+        okno.close();
+      }
+    })
+    ipcRenderer.send('asynchronous-message', [$(".siteurl").val()+'/'+link, $(".sitecontainer").outerHeight(), 1])
+  }
+  $(".set").click(function(){
+    rp($(".siteurl").val()).then(function(data){
+        rp($(".siteurl").val()+"/lista.html").then(function(data){
+        $(".sitecontainer").css('display', 'block').promise().then(function(){
+        $(data).find("a").each(function(){
+          var attr = $(this).attr("href")
+          console.log(this);
+          $(this).removeAttr("href")
+          $(this).html("<div><a>"+$(this).text()+"</a><button style='display:inline-block' class='select' onclick='selectPlan(`"+attr+"`)'>wybierz</button></div>")
+          $(".sitecontainer").append($(this).html())
+        })})
+      })
+
+
+    })
+  })
+</script>
+</html>
