@@ -7,6 +7,7 @@ const {
   Tray,
   ipcMain
 } = require('electron')
+const vulcan = require('vulcan-api-js');
 const rp = require('request-promise');
 var fs = require('fs');
 const path = require('path');
@@ -41,7 +42,7 @@ try {
       rp(arg[0])
         .then(function(html) {
       windows[1].setSize(windows[1].getBounds().width, 200)
-      windows[1].loadURL('data:text/html;charset=utf-8,' + '<script>var $ = require("jquery")</script><script>$(document).ready(function(){$("a").attr("href", "")})</script><script>$(document).ready(function(){$("a").attr("href", "")})</script><script>$(document).ready(function(){$("html").html($(".tabela").parent().html())})</script><script>$(document).ready(function(){$("a").each(function(){$(this).replaceWith($(`<span>` + $(this).text() + `</span>`))})})</script><script>$(document).ready(function(){$(" th").each(function(){$(this).replaceWith($(`<th>` + unescape($(this).text()) + `</th>`))})})</script><script>$(document).ready(function(){$("span").each(function(){$(this).replaceWith($(`<span>` + unescape($(this).text()) + `</span>`))})})</script><script>$(document).ready(function(){require("electron").ipcRenderer.send(`asynchronous-message`, [null, $("table").outerHeight(), 2])})</script>' + escape((html.toString())))
+      windows[1].loadFile("assets/plan.html");
       windows[1].webContents.on('did-finish-load', function() {
         windows[1].webContents.insertCSS(cssdata)
       event.reply('asynchronous-reply', true)
@@ -57,7 +58,7 @@ try {
     var win = new BrowserWindow({
       width: 600,
       height: 800,
-      frame: false,
+      frame: true,
       webPreferences: {
         nodeIntegration: true,
         enableRemoteModule: true
@@ -101,7 +102,7 @@ try {
           win.setIgnoreMouseEvents(!isDev)
           win.show()
           // win.setIgnoreMouseEvents(true)
-          win.loadURL('data:text/html;charset=utf-8,' + '<script>var $ = require("jquery")</script><script>$(document).ready(function(){$("a").attr("href", "")})</script><script>$(document).ready(function(){$("html").html($(".tabela").parent().html())})</script><script>$(document).ready(function(){$("a").each(function(){$(this).replaceWith($(`<span>` + $(this).text() + `</span>`))})})</script><script>$(document).ready(function(){$(" th").each(function(){$(this).replaceWith($(`<th>` + unescape($(this).text()) + `</th>`))})})</script><script>$(document).ready(function(){$("span").each(function(){$(this).replaceWith($(`<span>` + unescape($(this).text()) + `</span>`))})})</script>' + escape((html.toString())))
+          win.loadFile("assets/plan.html")
           win.webContents.on('did-finish-load', function() {
             win.webContents.insertCSS(cssdata)
             // if (nativeTheme.shouldUseDarkColors()) {

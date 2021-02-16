@@ -8,15 +8,16 @@
     "start": "electron ."
   },
   "dependencies": {
+    "@peculiar/webcrypto": "^1.1.6",
     "bootstrap": "^4.6.0",
     "electron-bottom-most": "^0.3.0",
     "electron-css": "^1.0.2",
     "jquery": "^3.5.1",
     "jsdom": "^16.4.0",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
-    },
-  "devDependencies": {},
+    "request-promise": "^4.2.6",
+    "vulcan-api-js": "^1.1.2"
+  },
   "repository": {
     "type": "git",
     "url": "none"

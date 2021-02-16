@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pl" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <div class="container">
+<div style="display: inline-flex">
+  <table border="1" cellspacing="0" cellpadding="4" class="tabela lessonplan">
+  <tbody>
+    <tr>
+      <th>godzina</th>
+      <th>Plan na dziś</th>
+    </tr>
+
+  </tbody>
+  </table>
+</div>
+<div>
+  <table border="1" cellspacing="0" cellpadding="4" class="tabela grades" >
+    <tr>
+      <th>Przedmiot</th>
+      <th>Ocena</th>
+    </tr>
+  </table>
+</div>
+<div>
+  <table border="1" cellspacing="0" cellpadding="4" class="tabela messages" >
+    <tr>
+      <th>Przedmiot</th>
+      <th>Ocena</th>
+    </tr>
+  </table>
+</div>
+</div>
+  </body>
+   <script type="text/javascript">
+
+
+
+
+
+
+    var lekcyje = ''
+      const vulcan = require("vulcan-api-js")
+      const $ = require("jquery")
+      const fs = require("fs")
+      $(document).ready(function(){
+        var table;
+        var certificate = JSON.parse(fs.readFileSync('assets/cert.txt', "utf-8"))
+        var api = new vulcan.Vulcan(certificate)
+        let objectWithGroupByName = [];
+        let name = 0;
+        api.getStudents().then(students => {
+                api.setStudent(students[0]).then(() => {
+                  api.getLessons().then((lessons) => {
+                          for (var i = 0; i < lessons.length; i++){
+                             name = lessons[i].number;
+                          if (!objectWithGroupByName[name]){
+                             objectWithGroupByName[name] = [];
+                          }
+                            objectWithGroupByName[name].push(lessons[i]);
+                        }
+                        let organisedlessons = objectWithGroupByName;
+                        console.log(organisedlessons);
+                        for (i in organisedlessons){
+                          let combinedlesson;
+                          for (j in organisedlessons[i]){
+                            console.log(organisedlessons[i][j].subject.short);
+                            if (combinedlesson == undefined) {
+                              combinedlesson = ''
+                            }
+                            combinedlesson = organisedlessons[i][j].subject.short + "<br>" + combinedlesson
+                          }
+                          $('.lessonplan > tbody').append("<tr><td class='l'>"+organisedlessons[i][0].time.from+"-"+organisedlessons[i][0].time.to+"</td><td class='l'>"+combinedlesson+"</td></tr>")
+                          combinedlesson = ''
+                      }})
+
+
+                  api.getGrades().then((grades) => {
+                    datenow = new Date();
+                    date = new Date(datenow.getTime()-604800000);
+                    year = date.getFullYear();
+                    month = date.getMonth()+1;
+                    dt = date.getDate();
+                    if (dt < 10) {
+                      dt = '0' + dt;
+                    }
+                    if (month < 10) {
+                      month = '0' + month;
+                    }
+
+                    grades = grades.reverse()
+                    for (var i = 0; i < grades.length; i++) {
+                      var grade = grades[i]
+                      if (year+'-' + month + '-'+dt === grade.date) {
+                        break
+                      }
+                        var table = "<tr><td class='l'>"+grade.subject.short+"</td><td class='l'>"+grade.content+"</td></tr>"
+                        $(".grades > tbody").append(table)
+                    }
+
+                  })
+
+                })
+        });
+
+
+      })
+   </script>
+</html>
